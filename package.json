@@ -1,0 +1,15 @@
+{
+  "name": "study",
+  "version": "1.0.0",
+  "description": "Hypertext Markup Language, 中文也就是超文本链接标示语言。",
+  "main": "net-manager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- 声明当前文档的解析方式， html1,html2, ... html5 2015年 -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>冰冰222</title>
+        <style>
+            /* 
+            # id
+            . 类
+            div,span 标签
+            */
+            .bg-color-red {
+                background-color: red;
+                color: white;
+            }
+
+            /* span {
+                background-color: green;
+                font-size: 30px;
+            } */
+            .color-red {
+                color: red;
+            }
+            .color-blue {
+                color: blue;
+            }
+            .text-wrapper {
+                display: flex;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- hello world! -->
+        <div class="bg-color-red">hello</div>
+        <span>world!</span>
+
+        <hr />
+
+        <span class="text-wrapper">
+            <span class="color-red">css语言</span>
+            <span class="color-blue">是</span>
+            <span class="color-red">什么</span>
+            <span class="color-blue">？ </span>
+        </span>
+        <div id="info">222</div>
+
+        <div style="text-align: center">
+            <img
+                width="50%"
+                src="D:\Desktop\微信图片_our.jpg"
+                alt="我们的自拍照"
+            />
+        </div>
+    </body>
+    <script type="module">
+        import NetManager from './net-manager.js';
+        import store from './store.js';
+
+        const arr = new Array(100).fill('1');
+
+        const netManager = new NetManager(100);
+
+        const fetchIngs = {};
+        store.state.fetchIngs = fetchIngs;
+
+        const controller = new AbortController();
+        arr.forEach((item, index) => {
+            netManager
+                .push({
+                    fetch: async () => {
+                        // fetchIngs[index] = controller;
+                        return fetch(
+                            `https://jsonplaceholder.typicode.com/posts/${index}`,
+                            {
+                                signal: controller.signal
+                            }
+                        );
+                    }
+                })
+                .then((res) => res.json())
+                .then((res) => {
+                    console.log('res', res);
+                    delete store.state.fetchIngs[index];
+                })
+                .catch((error) => {
+                    console.error('error', index, error);
+                });
+        });
+
+        setTimeout(() => {
+            // console.error('store', JSON.stringify(fetchIngs));
+            // Object.values(fetchIngs).forEach((controller) =>
+            //     controller.abort()
+            // );
+            controller.abort();
+        }, 1000 * 2);
+    </script>
+    <script>
+        // var obj = {
+        //     name: 'bingbing',
+        //     age: 19,
+        //     color: 'green'
+        // };
+        // console.log('obj', obj);
+        // var infoContainer = document.querySelector('#info');
+        // // infoContainer.innerHTML = obj.name + ',' + obj.age + ',' + obj.color;
+        // infoContainer.innerHTML = `name: ${obj.name}, age: ${obj.age}, cloth color: ${obj.color}`;
+
+        // console.log('infoContainer', infoContainer);
+        // console.log('infoContainer.innerHTML', infoContainer.innerHTML);
+    </script>
+</html>
